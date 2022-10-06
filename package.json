@@ -2,5 +2,11 @@
   "dependencies": {
     "chai": "^4.3.6",
     "cypress": "^10.9.0"
+  },
+  "devDependencies": {
+    "@testing-library/cypress": "^8.0.3",
+    "cypress-iframe": "^1.0.1",
+    "cypress-wait-until": "^1.7.2",
+    "cypress-xpath": "^2.0.1"
   }
 }

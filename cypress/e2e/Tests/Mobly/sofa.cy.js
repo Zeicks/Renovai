@@ -6,14 +6,17 @@ describe('Sofa Test For Mobly', () => {
       const test_logic = new Test_logic_for_Mobly;
       it('1 item test', () => {
         cy.visit('https://www.mobly.com.br/poltrona-dixe-tresse-ii-bege-623158.html');
-        cy.get('#dm876A > .dp-bar-button').click();
+      cy.request('https://www.mobly.com.br/poltrona-dixe-tresse-ii-bege-623158.html').then( ({ status }) => {
+        expect(status).to.eq(200)
+      });
+
        test_logic.cookieAccept();
+
         cy.scrollTo(0, 650);
 
         if (cy.get('#mobly_frame').should('be.visible')) {
           cy.log('All ok')
-      } else (cy.log('cant create'));
-
+      } else (cy.log('Cant create'));
 
       })
 

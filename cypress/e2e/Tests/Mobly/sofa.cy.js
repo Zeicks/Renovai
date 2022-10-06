@@ -11,12 +11,12 @@ describe('Sofa Test For Mobly', () => {
       });
 
        test_logic.cookieAccept();
+
         cy.scrollTo(0, 650);
 
         if (cy.get('#mobly_frame').should('be.visible')) {
           cy.log('All ok')
       } else (cy.log('Cant create'));
-
 
       })
 

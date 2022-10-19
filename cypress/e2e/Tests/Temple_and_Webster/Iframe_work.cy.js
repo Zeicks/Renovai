@@ -7,10 +7,17 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 describe('Recipe: blogs__iframes', () => {
     it('fetches post using iframes plugin', () => {
         cy.visit('https://www.templeandwebster.com.au/Admiral-Cocky-Acrylic-Wall-Art-ICON1297.html?refid=Renovai447-ICON1297_200519255&PiID%5B%5D=200519255');
+        cy.request({
+            method: 'GET',
+            url: ('https://www.templeandwebster.com.au/Admiral-Cocky-Acrylic-Wall-Art-ICON1297.html?refid=Renovai447-ICON1297_200519255&PiID%5B%5D=200519255')
+        }).then((res) => {
+            expect(res.status).to.eq(200)
+        })
         cy.scrollTo(0, 1100);
 
-        cy.frameLoaded('#tpw_renovai_frame')
-        cy.iframe('#tpw_renovai_frame').contains('SEE SIMILAR').click();
+        cy.frameLoaded('#renovai-frame-0');
+        cy.iframe('#renovai-frame-0').contains('SEE SIMILAR').click();
+        // cy.iframe('#tpw_renovai_frame').contains('SEE SIMILAR').click();
 
         cy.log('Text')
 

@@ -1,4 +1,5 @@
 const { defineConfig } = require("cypress");
+const { beforeRunHook, afterRunHook } = require('cypress-mochawesome-reporter/lib');
 
 module.exports = defineConfig({
   HN_Chair: 'https://www.harveynorman.ie/big-sale/roxy-armchair.html',
@@ -14,6 +15,7 @@ module.exports = defineConfig({
   TandW_Storage_MediaUnit: 'https://www.templeandwebster.com.au/Home-Theatre-Entertainment-Unit-Platinum1800BLK-KDFU1088.html?refid=Renovai447-KDFU1088',
   TandW_Table: 'https://www.templeandwebster.com.au/Glass-Monterey-Coffee-Table-ESTA1081.html?refid=Renovai447-ESTA1081_200189385&PiID%5B%5D=200189385',
 
+
   viewportWidth: 1920,
   viewportHeight: 1080,
   defaultCommandTimeout: 10000,
@@ -21,9 +23,19 @@ module.exports = defineConfig({
   video: true,
   chromeWebSecurity: false,
 
+  reporter: 'cypress-mochawesome-reporter',
   e2e: {
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      on('before:run', async (details) => {
+        console.log('override before:run');
+        await beforeRunHook(details);
+      });
+
+      on('after:run', async () => {
+        console.log('override after:run');
+        await afterRunHook();
+      });
     },
   },
+
 });

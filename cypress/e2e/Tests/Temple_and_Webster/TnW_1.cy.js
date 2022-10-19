@@ -12,11 +12,14 @@ describe('Temple and Webster MB', () => {
         cy.scrollTo(0, 1000);
 
         cy.frameLoaded('#renovai-frame-0');
-        cy.wait(9000);
+        cy.wait(8000);
         cy.iframe('#renovai-frame-0')
             .xpath('//div[@class="mb-item ng-star-inserted"][1]', { timeout: 3000 }).click()
+            .xpath('//i[@class = "info__x font-icon-exit ng-star-inserted"]').click()
+            .xpath('//app-alt-card[2]').click();
 
-            .xpath('//app-alt-card[1]', { timeout: 3000 }).click();
+        cy.iframe('#renovai-frame-0').contains('SEE SIMILAR').click()
+            .xpath('//app-alt-card[1]').click();
 
 
 
@@ -24,7 +27,7 @@ describe('Temple and Webster MB', () => {
 
 
         // cy.iframe('#renovai-frame-0').get(token, { timeout: 3000 }).click();
-        // cy.iframe('#renovai-frame-0').contains('SEE SIMILAR').click();
+        //
 
         //cy.iframe('.mb-item.ng-star-inserted.__web-inspector-hide-shortcut__').click();
         // xpath for BA //div[@class="mb-item ng-star-inserted"][2]

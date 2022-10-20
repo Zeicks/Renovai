@@ -5,8 +5,10 @@ Cypress.on('uncaught:exception', (err, runnable) => {
     // failing the test
     return false
 })
+
 describe('Temple and Webster MB', () => {
-    const token = "'body > app-root:nth-child(3) > app-shell:nth-child(2) > div:nth-child(1) > perfect-scrollbar:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > app-final:nth-child(2) > app-mode-default:nth-child(1) > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > app-scene-mb:nth-child(1) > div:nth-child(1) > div:nth-child(2)'";
+  //  const token = "'body > app-root:nth-child(3) > app-shell:nth-child(2) > div:nth-child(1) > perfect-scrollbar:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > app-final:nth-child(2) > app-mode-default:nth-child(1) > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > app-scene-mb:nth-child(1) > div:nth-child(1) > div:nth-child(2)'";
+
     it('Test coverlet set', () => {
         cy.visit('https://www.templeandwebster.com.au/Queens-Cotton-Coverlet-Set-CLQT1102.html?refid=Renovai447-CLQT1102_200536374&PiID%5B%5D=200536374');
         cy.scrollTo(0, 1000);
@@ -18,9 +20,15 @@ describe('Temple and Webster MB', () => {
             .xpath('//i[@class = "info__x font-icon-exit ng-star-inserted"]').click()
             .xpath('//app-alt-card[2]').click();
 
-        cy.iframe('#renovai-frame-0').contains('SEE SIMILAR').click()
+        cy.iframe('#renovai-frame-0')
+            .contains('SEE SIMILAR').click()
             .xpath('//app-alt-card[1]').click();
+       
+        cy.iframe('#renovai-frame-0')
+        .contains('ADD TO CART').click({force: true});
 
+        cy.xpath('//div[@class= "js-basket-dropdown-container"]//a//span[@class= "top-nav-icon"]').click();
+        
 
 
 

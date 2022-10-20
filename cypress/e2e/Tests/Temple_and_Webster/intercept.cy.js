@@ -1,10 +1,30 @@
+Cypress.on('uncaught:exception', (err, runnable) => {
+    // returning false here prevents Cypress from
+    // failing the test
+    return false
+})
 describe('Test intercept', () => {
     it('Test 1 item', () => {
-        const site = 'https://www.templeandwebster.com.au/Admiral-Cocky-Acrylic-Wall-Art-ICON1297.html?refid=Renovai447-ICON1297_200519255&PiID%5B%5D=200519255';
-        cy.intercept('GET', site, {
-            ICON1297_200519260: response
+      
+        cy.intercept('/projects/2', (req) => {
+            req.continue((res) => {
+              expect(res.body).to.include('My Project')
+            })
+          })
+
+
+        cy.intercept('GET', '**/api/v1/collage/check/**').as('request')
+        cy.intercept('POST','**/api/v1/collage/create-sku-userinfo').as('SKU_REQUEST')
+      //      req.continue((res)=>{
+     //           cy.log(res.its('response.body.sku'))
+            
+      //  })
+        cy.visit('https://www.templeandwebster.com.au/Queens-Cotton-Coverlet-Set-CLQT1102.html?refid=Renovai447-CLQT1102_200536374&PiID%5B%5D=200536374');
+        cy.wait('@request').its('response.body.response').should('eq', true)
+       
+        cy.wait('@SKU_REQUEST').then((interception)=>{
+            cy.log(interception.response.body.sku)
         })
-        cy.visit(site);
 
 
 

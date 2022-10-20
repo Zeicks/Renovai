@@ -4,14 +4,7 @@ describe('Test_HarvyNorman_Chair', () => {
   const test_logic = new Test_logic;
   // TODO: output link and sku !!!
 
-  // afterEach(() => {
-  //   if (test_logic.ifreme().should('be.visible')) {
-  //     cy.log('Scene Create');
-  //   }
-  //   else {
-  //     cy.log('Can`t create scene');
-  //   }
-  // })
+  
 
   it('Test 1 item ', () => {
     test_logic.test_for_be_visible_chairs();

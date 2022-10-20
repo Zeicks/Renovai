@@ -87,12 +87,12 @@ class Test_logic {
     };
 
     test_for_be_visible_chairs() {
-        const token = this.randomURL()
-        cy.visit(token);
+        const thisPage = this.randomURL()
+        cy.visit(thisPage);
 
         cy.request({
             method: 'GET',
-            url: (token)
+            url: (thisPage)
         }).then((res) => {
             expect(res.status).to.eq(200)
         })

@@ -7,7 +7,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 
 describe('Temple and Webster MB', () => {
 
-
+  // Intercepted network for sku , visited the site then write to console sku item.
   before('Get Sku And Visit Site', () => {
     cy.intercept('/projects/2', (req) => {
       req.continue((res) => {
@@ -23,7 +23,13 @@ describe('Temple and Webster MB', () => {
     });
   });
 
-  // Scroll to ifream ,load and waite ifream
+
+  /*
+  Scroll to ifream ,load and wait ifream
+  Click on the coverlet set on the scene.
+  Close component.
+  In bottombar click on second similar item
+  */
   it('Change Item On Scene', () => {
     scene.iframeLoad();
     cy.iframe(scene.iframe)
@@ -32,12 +38,14 @@ describe('Temple and Webster MB', () => {
       .xpath(scene.alternativeSecondItemInBottom).click();
   });
 
+  //In the sidebar click on first item and in bottombar click on first similar item
   it('Change Item From Sidebar', () => {
     cy.iframe(scene.iframe)
       .contains(scene.seeSimilar, { timeout: 1000 }).click()
       .xpath(scene.alternativeFirstItemInBottom).click();
   });
 
+  // Click the "Add to Cart" button in sidebar
   it('Add To Cart From Sidebar ', () => {
     cy.iframe(scene.iframe)
       .contains(scene.addToCart).click({ force: true });

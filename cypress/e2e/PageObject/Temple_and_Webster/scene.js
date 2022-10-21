@@ -12,23 +12,5 @@ export class Scene {
         cy.frameLoaded(this.iframe);
         cy.wait(8000);
     }
-    changeItemOnScene() {
-        cy.iframe(this.iframe)
-            .xpath(this.itemOnScene, { timeout: 3000 }).click()
-            .xpath(this.closeComponent).click()
-            .xpath(this.alternativeSecondItemInBottom).click()
-    }
-
-    changeItemFromSidebar() {
-        cy.iframe(this.iframe)
-            .contains(this.seeSimilar, { timeout: 1000 }).click()
-            .xpath(this.alternativeFirstItemInBottom).click()
-    }
-    addToCartFromSidebar() {
-        cy.iframe(this.iframe)
-            .contains(this.addToCart).click({ force: true });
-
-    }
-
 }
 export const scene = new Scene();

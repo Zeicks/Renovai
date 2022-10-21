@@ -6,6 +6,7 @@ export class Scene {
     alternativeFirstItemInBottom = '//app-alt-card[1]';
     seeSimilar = 'SEE SIMILAR';
     addToCart = 'ADD TO CART';
+    nameItemInComponent = '//div[@class="modal-prod-info"]//div[contains(@class, "__section_titl")]';
 
     iframeLoad() {
         cy.scrollTo(0, 1000);

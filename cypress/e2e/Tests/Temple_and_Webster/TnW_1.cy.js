@@ -24,24 +24,45 @@ describe('Temple and Webster MB', () => {
   });
 
 
-  /*
-  Scroll to ifream ,load and wait ifream
-  Click on the coverlet set on the scene.
-  Close component.
-  In bottombar click on second similar item
-  */
   it('Change Item On Scene', () => {
+
+    // Scroll to ifream ,load and wait ifream.
     scene.iframeLoad();
+
+    // Click on the coverlet set on the scene.
     cy.iframe(scene.iframe)
-      .xpath(scene.itemOnScene, { timeout: 3000 }).click()
-      .xpath(scene.closeComponent).click()
-      .xpath(scene.alternativeSecondItemInBottom).click();
+      .xpath(scene.itemOnScene, { timeout: 3000 }).click();
+
+    // Pulled out the name of the item.
+    cy.iframe(scene.iframe)
+      .xpath(scene.nameItemInComponent)
+      .invoke('text')
+      .then((nameUtil) => {
+
+        // Close component and in bottom bar click on second similar item.
+        cy.iframe(scene.iframe)
+          .xpath(scene.closeComponent).click()
+          .xpath(scene.alternativeSecondItemInBottom).click();
+
+        // Click on the coverlet set on the scene, pulled out the name of the item.
+        cy.iframe(scene.iframe)
+          .xpath(scene.itemOnScene).click()
+          .xpath(scene.nameItemInComponent)
+          .invoke('text').should((nameAfter) =>
+
+          // Сompare names (they don't to match).
+          { expect(nameUtil).not.to.eq(nameAfter) });
+
+        // Close component.
+        cy.iframe(scene.iframe)
+          .xpath(scene.closeComponent).click();
+      })
   });
 
   //In the sidebar click on first item and in bottombar click on first similar item
   it('Change Item From Sidebar', () => {
     cy.iframe(scene.iframe)
-      .contains(scene.seeSimilar, { timeout: 1000 }).click()
+      .contains(scene.seeSimilar, { timeout: 2000 }).click()
       .xpath(scene.alternativeFirstItemInBottom).click();
   });
 

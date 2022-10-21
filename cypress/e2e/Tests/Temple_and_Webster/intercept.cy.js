@@ -14,15 +14,11 @@ describe('Test intercept', () => {
 
 
         cy.intercept('GET', '**/api/v1/collage/check/**').as('request')
-        cy.intercept('POST','**/api/v1/collage/create-sku-userinfo').as('SKU_REQUEST')
-      //      req.continue((res)=>{
-     //           cy.log(res.its('response.body.sku'))
-            
-      //  })
+        cy.intercept('POST','**/api/v1/collage/create-sku-userinfo').as('sku')
         cy.visit('https://www.templeandwebster.com.au/Queens-Cotton-Coverlet-Set-CLQT1102.html?refid=Renovai447-CLQT1102_200536374&PiID%5B%5D=200536374');
         cy.wait('@request').its('response.body.response').should('eq', true)
        
-        cy.wait('@SKU_REQUEST').then((interception)=>{
+        cy.wait('@sku').then((interception)=>{
             cy.log(interception.response.body.sku)
         })
 

@@ -20,14 +20,13 @@ describe('Temple and Webster MB', () => {
     cy.wait('@request').its(network.haveBody).should('eq', true);
     cy.wait('@sku').then((interception) => {
       cy.log(interception.response.body.sku);
+      // Scroll to ifream ,load and wait ifream.
+    scene.iframeLoad();
     });
   });
 
 
   it('Change Item On Scene', () => {
-
-    // Scroll to ifream ,load and wait ifream.
-    scene.iframeLoad();
 
     // Click on the coverlet set on the scene.
     cy.iframe(scene.iframe)
@@ -42,13 +41,14 @@ describe('Temple and Webster MB', () => {
         // Close component and in bottom bar click on second similar item.
         cy.iframe(scene.iframe)
           .xpath(scene.closeComponent).click()
-          .xpath(scene.alternativeSecondItemInBottom).click();
+          .xpath(scene.alternativeFirstItemInBottom).click();
 
         // Click on the coverlet set on the scene, pulled out the name of the item.
         cy.iframe(scene.iframe)
           .xpath(scene.itemOnScene).click()
           .xpath(scene.nameItemInComponent)
-          .invoke('text').should((nameAfter) =>
+          .invoke('text')
+          .should((nameAfter) =>
 
           // Сompare names (they don't to match).
           { expect(nameUtil).not.to.eq(nameAfter) });
@@ -63,12 +63,28 @@ describe('Temple and Webster MB', () => {
   it('Change Item From Sidebar', () => {
     cy.iframe(scene.iframe)
       .contains(scene.seeSimilar, { timeout: 2000 }).click()
-      .xpath(scene.alternativeFirstItemInBottom).click();
+      .xpath(scene.nameItemInSidebar).first().invoke('text').then((nameUntilSideBar)=> {
+       
+        cy.iframe(scene.iframe)
+        .xpath(scene.alternativeFirstItemInBottom).click()
+        .xpath(scene.alternativeFirstItemInBottom).click();
+        
+
+        cy.iframe(scene.iframe)
+        .xpath(scene.nameItemInSidebar)
+        .first()
+        .invoke('text')
+        .should((nameAfterSideBar)=>
+
+        { expect(nameUntilSideBar).not.to.eq(nameAfterSideBar) });
+      })
+      
   });
 
   // Click the "Add to Cart" button in sidebar
   it('Add To Cart From Sidebar ', () => {
     cy.iframe(scene.iframe)
-      .contains(scene.addToCart).click({ force: true });
+      .contains(scene.addToCart).click({ force: true })
+      .contains(scene.addedButton).should('have.text', ' Added ');
   });
 });

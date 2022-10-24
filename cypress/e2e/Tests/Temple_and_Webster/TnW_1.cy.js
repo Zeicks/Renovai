@@ -21,7 +21,8 @@ describe('Temple and Webster MB', () => {
     cy.wait('@sku').then((interception) => {
       cy.log(interception.response.body.sku);
       // Scroll to ifream ,load and wait ifream.
-    scene.iframeLoad();
+      cy.scrollTo(0, 1000);
+      scene.iframeLoad();
     });
   });
 
@@ -41,7 +42,7 @@ describe('Temple and Webster MB', () => {
         // Close component and in bottom bar click on second similar item.
         cy.iframe(scene.iframe)
           .xpath(scene.closeComponent).click()
-          .xpath(scene.alternativeFirstItemInBottom).click();
+          .xpath(scene.alternativeFirstItemInBottom).first().click();
 
         // Click on the coverlet set on the scene, pulled out the name of the item.
         cy.iframe(scene.iframe)
@@ -59,26 +60,24 @@ describe('Temple and Webster MB', () => {
       })
   });
 
-  //In the sidebar click on first item and in bottombar click on first similar item
+  //In the sidebar click on first item (See similar) and in bottombar click on first similar item
   it('Change Item From Sidebar', () => {
+
     cy.iframe(scene.iframe)
       .contains(scene.seeSimilar, { timeout: 2000 }).click()
-      .xpath(scene.nameItemInSidebar).first().invoke('text').then((nameUntilSideBar)=> {
-       
-        cy.iframe(scene.iframe)
-        .xpath(scene.alternativeFirstItemInBottom).click()
-        .xpath(scene.alternativeFirstItemInBottom).click();
-        
+      .xpath(scene.nameItemInSidebar).first().invoke('text').then((nameUntilSideBar) => {
 
         cy.iframe(scene.iframe)
-        .xpath(scene.nameItemInSidebar)
-        .first()
-        .invoke('text')
-        .should((nameAfterSideBar)=>
+          .xpath(scene.alternativeFirstItemInBottom).first().realClick()
+          .xpath(scene.alternativeFirstItemInBottom).click();
 
-        { expect(nameUntilSideBar).not.to.eq(nameAfterSideBar) });
+        cy.iframe(scene.iframe)
+          .xpath(scene.nameItemInSidebar)
+          .first()
+          .invoke('text')
+          .should((nameAfterSideBar) => { expect(nameUntilSideBar).not.to.eq(nameAfterSideBar) });
       })
-      
+
   });
 
   // Click the "Add to Cart" button in sidebar
@@ -87,4 +86,25 @@ describe('Temple and Webster MB', () => {
       .contains(scene.addToCart).click({ force: true })
       .contains(scene.addedButton).should('have.text', ' Added ');
   });
+
+  // Change color scheme on scene
+  // TODO: add verification
+  it('Change color scheme ', () => {
+
+    cy.iframe(scene.iframe)
+      .xpath(scene.colourButton).realHover()
+      .xpath(scene.itemPalette).first().click({ force: true });
+    cy.wait(3000);
+  });
+
+  // Click the 'Add all items to cart' button, wait(27 second), checking if the number of added elements matches.
+  // TODO: implement waitUntil
+  it('Add all items to cart ', () => {
+    cy.iframe(scene.iframe)
+      .xpath(scene.addAllItemsButton).click();
+    cy.wait(27000);
+    cy.xpath(scene.countCartItem).should('have.text', '13');
+
+  });
+
 });

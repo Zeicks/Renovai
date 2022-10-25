@@ -16,7 +16,7 @@ describe('Temple and Webster MB', () => {
         });
         cy.intercept('GET', network.apiRequest).as('request');
         cy.intercept('POST', network.createSkuUserInfo).as('sku');
-        cy.visit(links.TnW_3);
+        cy.visit(links.TnW_2);
         cy.wait('@request').its(network.haveBody).should('eq', true);
         cy.wait('@sku').then((interception) => {
             cy.log(interception.response.body.sku);
@@ -29,31 +29,30 @@ describe('Temple and Webster MB', () => {
 
     it('Change Item On Scene', () => {
 
-        // Click on the table set on the scene.
+        // Click on the coverlet set on the scene.
         cy.iframe(scene.iframe)
-            .xpath(scene.tableOnScene, { timeout: 3000 }).first().click();
+            .xpath(scene.itemOnScene, { timeout: 3000 }).click();
 
         // Pulled out the name of the item.
         cy.iframe(scene.iframe)
             .xpath(scene.nameItemInComponent)
             .invoke('text')
-            .then((nameTable) => {
+            .then((nameUtil) => {
 
                 // Close component and in bottom bar click on second similar item.
                 cy.iframe(scene.iframe)
-                    .xpath(scene.alternativeItemInBottom, { timeout: 3000 }).first().click()
-                    .xpath(scene.closeComponent).click();
+                    .xpath(scene.closeComponent).click()
+                    .xpath(scene.alternativeFirstItemInBottom).first().click();
 
-
-                // Click on the table set on the scene, pulled out the name of the item.
+                // Click on the coverlet set on the scene, pulled out the name of the item.
                 cy.iframe(scene.iframe)
-                    .xpath(scene.tableOnScene).first().click()
+                    .xpath(scene.itemOnScene).click()
                     .xpath(scene.nameItemInComponent)
                     .invoke('text')
                     .should((nameAfter) =>
 
                     // Сompare names (they don't to match).
-                    { expect(nameTable).not.to.eq(nameAfter) });
+                    { expect(nameUtil).not.to.eq(nameAfter) });
 
                 // Close component.
                 cy.iframe(scene.iframe)
@@ -69,9 +68,8 @@ describe('Temple and Webster MB', () => {
             .xpath(scene.nameItemInSidebar).first().invoke('text').then((nameUntilSideBar) => {
 
                 cy.iframe(scene.iframe)
-                    .xpath(scene.alternativeItemInBottom).first().dblclick({ force: true });
-                //.xpath(scene.alternativeItemInBottom).first().click();
-
+                    .xpath(scene.alternativeFirstItemInBottom).first().realClick()
+                    .xpath(scene.alternativeFirstItemInBottom).click();
 
                 cy.iframe(scene.iframe)
                     .xpath(scene.nameItemInSidebar)
@@ -86,7 +84,7 @@ describe('Temple and Webster MB', () => {
     it('Add To Cart From Sidebar ', () => {
         cy.iframe(scene.iframe)
             .contains(scene.addToCart).click({ force: true })
-            .contains(scene.addedButton).should('have.text', 'Added' | ' Added ');
+            .contains(scene.addedButton).should('have.text', ' Added ');
     });
 
     // Change color scheme on scene
@@ -105,7 +103,7 @@ describe('Temple and Webster MB', () => {
         cy.iframe(scene.iframe)
             .xpath(scene.addAllItemsButton).click();
         cy.wait(27000);
-        cy.xpath(scene.countCartItem).should('have.text', '8' | '9');
+        cy.xpath(scene.countCartItem).should('have.text', '12');
 
     });
 

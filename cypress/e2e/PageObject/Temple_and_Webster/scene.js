@@ -1,7 +1,8 @@
 export class Scene {
     iframe = '#renovai-frame-0';
-    itemOnScene = '//div[@class="mb-item ng-star-inserted"][1]';
+    bathroomAccessoriesOnScene = '//div[@class="mb-item ng-star-inserted"][1]';
     tableOnScene = '//div[contains(@class,"mb-item_table")]';
+    itemOnScene = '//div[@class = "mb-item ng-star-inserted"][1]';
     closeComponent = '//i[@class = "info__x font-icon-exit ng-star-inserted"]';
     alternativeFirstItemInBottom = '//app-alt-card[1]';
     alternativeItemInBottom = '//div[@class="product-card__overlay cur-p"]';
